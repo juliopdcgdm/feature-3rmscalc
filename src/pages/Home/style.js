@@ -42,5 +42,15 @@ font-size:21px;
 color: #fff;
 `
 
+export const AreaDados = styled.View`
+flex:1;
+background-color:#fff;
+width: 90%;
+margin-top: 5px;
+border-top-left-radius: 7px;
+border-top-right-radius: 7px;
+`
+
+
 
 

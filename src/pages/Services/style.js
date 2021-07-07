@@ -16,7 +16,7 @@ flex-direction:row;
 export const Title = styled.Text `
 color:#00b1ff;
 font-weight: bold;
-font-size: 38;
+font-size: 38px;
 margin-top: 10px;
 `
 

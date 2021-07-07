@@ -1,4 +1,6 @@
 import React from 'react';
+import {View } from 'react-native'
+import * as Animatable from 'react-native-animatable';
 import Header from '../../components/Header'
 import {
   Background,
@@ -18,9 +20,10 @@ import Icon from 'react-native-vector-icons/Ionicons'
 
 export default function Services() {
   return (
+   
    <Background>
      <Header/>
-     <Container>
+     <Container behavior={Platform.OS == 'ios'? 'padding':''}>
       <AreaTitle>
         <Title>Nossas Soluções</Title>
       </AreaTitle>
@@ -80,7 +83,6 @@ export default function Services() {
           <ButtonText><Icon name='globe-outline' color='#000' size={35} /></ButtonText>
         </ButtonWeb>
       </AreaButttons>
-      
       <SocialTitle>Siga a 3RMS nas redes</SocialTitle>
       <Social>
        <Logos>
@@ -99,7 +101,6 @@ export default function Services() {
       </Social>
 
      </Container>
-     
-   </Background>
+     </Background>
   );
 }

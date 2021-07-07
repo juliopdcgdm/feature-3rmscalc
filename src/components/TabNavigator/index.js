@@ -8,7 +8,6 @@ import About from '../../pages/About'
 
 
 const Tab = createBottomTabNavigator()
-const imgPath = require('../assets/icon-menu.png')
 
 const icons = {
     Home: {
@@ -31,7 +30,7 @@ export default function TabNavigator() {
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ color, size }) => {
                     const { name } = icons[route.name]
-                    return <Icon name={name} color={color} size={size} />
+                    return <Icon name={name} color={color} size={30} />
                 }
             })}
 
@@ -42,15 +41,14 @@ export default function TabNavigator() {
 
                 },
                 activeTintColor: '#fff',
-                inactiveTintColor: '#3300cc',
+                inactiveTintColor: '#CCCCFF',
                 showLabel: true,
-
-
+                transiction:'fade'
             }}
         >
             <Tab.Screen name='Home' component={Home} options={{ title: 'Calculadora' }} />
-            <Tab.Screen name='Services' component={Services} />
-            <Tab.Screen name='About' component={About} />
+            <Tab.Screen name='Services' component={Services} options={{title:'Serviços'}} />
+            <Tab.Screen name='About' component={About} options={{title:'Sobre', }} />
         </Tab.Navigator>
 
     );

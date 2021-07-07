@@ -37,6 +37,9 @@ const Home = () => {
         {id: 12, taxaTotal:5.00, receber:50000.00, desconto:50000.00},
     ])
     
+    function hanldeCalc(){
+        
+    }
     return (
         <Background>
             <Header/>
@@ -54,7 +57,6 @@ const Home = () => {
                 </AreaInput>
 
                 <AreaInput>
-                    
                     <Input 
                     placeholder='Taxa de Crédito'
                     autoCorrect={false}
@@ -76,13 +78,10 @@ const Home = () => {
                     />
                 </AreaInput>
 
-                <SubmitButton onPress={()=> alert('Enviado para simulação')}>
+                <SubmitButton onPress={hanldeCalc}>
                     <TextButton>Simular</TextButton>
                 </SubmitButton>
 
-                {
-
-                }
                 <AreaDados>
                     <FlatList
                     data={data}

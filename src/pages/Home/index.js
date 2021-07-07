@@ -1,13 +1,17 @@
 import React,{useState} from 'react';
-import {FlatList, Platform,Text,View} from 'react-native'
+import {FlatList, Keyboard, Platform, StyleSheet} from 'react-native'
 import Header from '../../components/Header'
 import GridResult from '../../components/GridResult'
+import Toast from 'react-native-simple-toast';
+import { TextInputMask } from 'react-native-masked-text'
+import * as Animatable from 'react-native-animatable';
+
 
 import {
     Background,
     Container,
     AreaInput,
-    Input, 
+    Text, 
     SubmitButton,
     TextButton,
     AreaDados,
@@ -18,26 +22,106 @@ import {
 
 const Home = () => {
 
-    const [txDebito, setTxDebito] = useState('')
-    const [txCredito, setTxCredito] = useState('')
-    const [txAtencipacao, setTxAtencipacao] = useState('')
-    const [data, setData] = useState([
-        {id: 0, taxaTotal:12.0230, receber:12.00, desconto:12.00},
-        {id: 1, taxaTotal:12.02, receber:12.01, desconto:12.00},
-        {id: 2, taxaTotal:2.00, receber:200000.00, desconto:2.00},
-        {id: 3, taxaTotal:3.00, receber:3000.00, desconto:300.00},
-        {id: 4, taxaTotal:4.00, receber:40000.00, desconto:4000.00},
-        {id: 5, taxaTotal:5.00, receber:50000.00, desconto:50000.00},
-        {id: 6, taxaTotal:5.00, receber:50000.00, desconto:50000.00},
-        {id: 7, taxaTotal:5.00, receber:50000.00, desconto:50000.00},
-        {id: 8, taxaTotal:5.00, receber:50000.00, desconto:50000.00},
-        {id: 9, taxaTotal:5.00, receber:50000.00, desconto:50000.00},
-        {id: 10, taxaTotal:5.00, receber:50000.00, desconto:50000.00},
-        {id: 11, taxaTotal:5.00, receber:50000.00, desconto:50000.00},
-        {id: 12, taxaTotal:5.00, receber:50000.00, desconto:50000.00},
-    ])
-    
+    let vlrVenda, taxaDebito,taxaCredito,taxaAntecipacao
+
+    const [iptVenda, setiptVenda] = useState('')
+    const [textButton, settextButton] = useState('Simular')
+    const [show, setshow] = useState(true)
+    const [iptDebito, setiptDebito] = useState('')
+    const [iptCredito, setiptCredito] = useState('')
+    const [iptAntecipacao, setiptAntecipacao] = useState('')
+    const [data, setData] = useState([])
+    const [animation, setanimation] = useState('')
+    let result = []
+
+    function calcDebito(){
+              
+        //---------------- calculo das taxas -------------------
+        //CALCULO DEBITO
+        //valorDesconto = (taxaDeDebito/100 ) * valorDaVenda
+        //valorReceber = valorDaVenda - valorDesconto
+        if (iptDebito !== '' || iptDebito === '0' ){
+            let valorDesconto , valorReceber
+            
+            valorDesconto = (taxaDebito.getRawValue()/100) * vlrVenda.getRawValue()
+            valorReceber = vlrVenda.getRawValue() - valorDesconto
+            
+            result.push ({
+                    id:0,
+                    taxaTotal:taxaDebito.getRawValue(),
+                    receber:valorReceber,
+                    desconto:valorDesconto,
+                })
+            // setData(result)
+            // console.log(result)
+        }
+    }
+
+    function calcCredito(){
+        //credito a vista
+        //taxaTotal = (taxaAntecipacao x vezes ) + taxaCredito
+        //vrlDesconto = (taxaTotal/100) * valorvenda
+        //vrlReceber = valorVenda - vlrDesconto
+        
+        let vezes
+        let valorDesconto , valorReceber, taxaTotal
+        
+
+        for(vezes=1; vezes <= 12; vezes++){
+            
+            let taxaAntecip = taxaAntecipacao.getRawValue()
+            
+            if (vezes === 1){
+                taxaAntecip = 0
+            }
+            
+            taxaTotal = (taxaAntecip * vezes) + taxaCredito.getRawValue()
+            valorDesconto = (taxaTotal / 100) * vlrVenda.getRawValue()
+            valorReceber = vlrVenda.getRawValue() - valorDesconto
+
+            result.push({
+                id:vezes,
+                taxaTotal:taxaTotal,
+                receber:valorReceber,
+                desconto:valorDesconto,
+            })
+        }
+    }
+
+    //Execute the calcs and insert in object
     function hanldeCalc(){
+        
+        if(show){
+            if (iptCredito == '' || iptAntecipacao == '' || iptVenda == '' ){
+                Toast.showWithGravity('Insira os dados para simulação', Toast.SHORT, Toast.TOP)
+                return
+            }
+
+            //dispensa o teclado
+            Keyboard.dismiss()
+            //Caculo taxas debito
+            calcDebito()
+            //calculo taxas credito
+            calcCredito()
+            //atualiza state data
+            setData(result) 
+            setanimation('slideInDown')
+            settextButton('Simular Novamente')
+            setshow(false)
+        }else{
+            clear()
+        }
+        
+    }
+
+    function clear(){
+        setiptVenda('')
+        setiptDebito('')
+        setiptCredito('')
+        setiptAntecipacao('')
+        settextButton('Simular')
+        setshow(true)
+        setData([])
         
     }
     return (
@@ -45,57 +129,116 @@ const Home = () => {
             <Header/>
             <Container behavior={Platform.OS == 'ios'? 'padding':''}>
                 
+                {/* valor venda */}
                 <AreaInput>
-                    <Input 
-                    placeholder='Taxa de Débido'
-                    autoCorrect={false}
-                    autoCapitalize='none'
-                    value={txDebito}
-                    onChangeText={(value) => setTxDebito(value)}
+                    <Text>Valor Venda</Text>
+                    <TextInputMask
+                    style={maskinputStyles.input}
+                    type={'money'}
+                    options={{
+                        separator: ',',
+                        delimiter: '.',
+                        unit:'R$',
+                        suffixUnit: ''
+                    }}
+                    value={iptVenda}
+                    onChangeText = {value => setiptVenda(value)}
                     keyboardType = 'number-pad'
+                    placeholder='R$0000,00'
+                    ref={ ref => vlrVenda = ref}
                     />
                 </AreaInput>
-
+                 
+                 {/* taxa debito */}
                 <AreaInput>
-                    <Input 
-                    placeholder='Taxa de Crédito'
-                    autoCorrect={false}
-                    autoCapitalize='none'
-                    value={txCredito}
-                    onChangeText={(value) => setTxCredito(value)}
-                    keyboardType = 'number-pad'
-                    />
+                    <Text>Taxa Debito</Text>
+                    <TextInputMask
+                        style={maskinputStyles.input}
+                        type={'money'}
+                        options={{
+                            separator: ',',
+                            delimiter: '.',
+                            unit:'',
+                        }}
+                        value={iptDebito}
+                        onChangeText = {value => setiptDebito(value)}
+                        keyboardType = 'number-pad'
+                        placeholder='0,00'
+                        ref={ ref => taxaDebito = ref}
+                        />
                 </AreaInput>
                 
+                {/* taxa credito */}
                 <AreaInput>
-                    <Input 
-                    placeholder='Taxa de Antecipação'
-                    autoCorrect={false}
-                    autoCapitalize='none'
-                    value={txAtencipacao}
-                    onChangeText={(value) => setTxAtencipacao(value)}
-                    keyboardType = 'number-pad'
-                    />
+                    <Text>Taxa Credito</Text>
+                    <TextInputMask
+                            style={maskinputStyles.input}
+                            type={'money'}
+                            options={{
+                                separator: ',',
+                                delimiter: '.',
+                                unit:'',
+                            }}
+                            value={iptCredito}
+                            onChangeText = {value => setiptCredito(value)}
+                            keyboardType = 'number-pad'
+                            placeholder='0,00'
+                            ref={ ref => taxaCredito = ref}
+                            />
+                </AreaInput>
+                
+                {/* taxa antecipação */}
+                <AreaInput>
+                    <Text>Taxa Antecipacao</Text>
+                    <TextInputMask
+                            style={maskinputStyles.input}
+                            type={'money'}
+                            options={{
+                                separator: ',',
+                                delimiter: '.',
+                                unit:'',
+                                
+                            }}
+                            value={iptAntecipacao}
+                            onChangeText = {value => setiptAntecipacao(value)}
+                            keyboardType = 'number-pad'
+                            placeholder='0,00'
+                            ref={ ref => taxaAntecipacao = ref}
+                            />
+
+
                 </AreaInput>
 
                 <SubmitButton onPress={hanldeCalc}>
-                    <TextButton>Simular</TextButton>
+                    <TextButton>{textButton}</TextButton>
                 </SubmitButton>
 
-                <AreaDados>
-                    <FlatList
-                    data={data}
-                    renderItem={({item}) => <GridResult data={item}/>}
-                    showsVerticalScrollIndicator={true}
-                    keyExtractor={(item) => item.id}
-                    />
-                    
-                </AreaDados>
+                
+                        <FlatList
+                        style={{marginTop:5, width:'90%'}}
+                        data={data}
+                        renderItem={({item}) => {
+                            return(
+                                <Animatable.View animation={animation}>
+                                    <GridResult data={item}/>
+                                </Animatable.View>
+                            )
+                        }}
+                        showsVerticalScrollIndicator={true}
+                        keyExtractor={(item) => item.id}
+                        />
+                
             </Container>
         </Background>
     );
 }
 
+const maskinputStyles = StyleSheet.create({
+    input:{
+        fontSize:21,
+        color: '#666',
+    }
+})
 
 
 export default Home;

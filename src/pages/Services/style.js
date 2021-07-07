@@ -22,11 +22,11 @@ margin-top: 10px;
 
 export const AreaButttons = styled.View `
 flex-direction:row;
-margin-top: 10px;
+margin-top: 5px;
 width:100%;
 `
-export const Buttons = styled.TouchableOpacity `
-flex-direction: row;
+export const Buttons = styled.View `
+flex-direction: column;
 align-items: center;
 background-color: #00b1ff;
 border-radius:10px;
@@ -34,7 +34,6 @@ border-width: 1px;
 border-color:#00b1ff;
 width: 70%;
 height: 45px;
-
 margin-left:10px;
 `
 export const ButtonWhatsZap = styled.TouchableOpacity `
@@ -47,11 +46,10 @@ export const ButtonWeb = styled.TouchableOpacity `
 flex-direction: row;
 align-items: center;
 height: 45px;
-margin-left:5px;
 `
 
 export const ButtonText = styled.Text `
-font-size: 20px;
+font-size: 17px;
 color: #fff;
 text-align: center;
 padding: 5px;

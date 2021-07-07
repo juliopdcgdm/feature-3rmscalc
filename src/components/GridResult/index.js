@@ -3,11 +3,11 @@ import {
     Container,
     Text,
     Header,
+    HeaderText,
     Body,
     TextTxTotal,
     TextReceber,
     TextDesconto
-   
 }
 from './style'
 export default function GridResult(props) {
@@ -17,14 +17,16 @@ export default function GridResult(props) {
     return (
         <Container >
             <Header key={id}>
-                {
-                    id == 0
-                    ?
-                    <Text>Debito</Text>
-                    :
-                    <Text>{id}x</Text>
+                <HeaderText>
+                    {
+                        id == 0
+                        ?
+                        <Text>Debito</Text>
+                        :
+                        <Text>{id}x</Text>
 
-                }
+                    }
+                </HeaderText>
                
             </Header>
 

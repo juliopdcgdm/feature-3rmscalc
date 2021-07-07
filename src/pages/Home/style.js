@@ -1,6 +1,6 @@
 
-import { KeyboardAvoidingView } from 'react-native'
 import styled from 'styled-components'
+
 
 export const Background = styled.View`
 flex:1;
@@ -12,21 +12,14 @@ flex:1;
 /* justify-content: center; */
 align-items: center;
 `
-
-export const Text = styled.Text`
-font-size: 30px;
-`
 export const AreaInput = styled.View`
 border-width: 1px;
 border-radius: 10px;
 width: 90%;
-margin-top:10px;
+margin-top:5px;
+height: 60px;
+border-color: #00b1ff;
 `
-export const Input = styled.TextInput`
-font-size: 21px;
-color: #000;
-` 
-
 export const SubmitButton = styled.TouchableOpacity`
 justify-content: center;
 align-items: center;
@@ -44,14 +37,17 @@ font-weight: bold;
 `
 
 export const AreaDados = styled.View`
-flex:1;
 background-color:#fff;
 width: 90%;
 margin-top: 5px;
 border-top-left-radius: 7px;
 border-top-right-radius: 7px;
 `
-
+export const Text = styled.Text`
+font-size: 15px;
+margin-left:3px ;
+color: #00b1ff;
+`
 
 
 

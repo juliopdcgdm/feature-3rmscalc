@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Linking } from 'react-native'
 import Header from '../../components/Header'
+import {useNavigation} from '@react-navigation/native'
 import {
   Background,
   Container,
@@ -19,6 +20,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 
 export default function Services() {
 
+  const navigation = useNavigation()
   const [msg, setmsg] = useState('(Teste) Olá vim pelo app 3RMS Calc, gostria de mais informações sobre ')
   const [number, setnumber] = useState('5511987655307')
 
@@ -31,6 +33,10 @@ export default function Services() {
         .catch(()=> console.log('Whatsapp não está instalado no dispositivo'))
       }
     }
+  }
+
+  function openPageWeb(url){
+    navigation.navigate('PageWebView', {url : url})
   }
 
   const social = (url,app) =>{
@@ -57,7 +63,7 @@ export default function Services() {
           <ButtonText><Icon name='logo-whatsapp' color='green' size={35} /></ButtonText> 
         </ButtonWhatsZap>
 
-        <ButtonWeb>
+        <ButtonWeb onPress={() => openPageWeb('https://www.3rmstech.com.br/tef/')}>
           <ButtonText><Icon name='globe-outline' color='#000' size={35} /></ButtonText>
         </ButtonWeb>
       </AreaButttons>
@@ -72,7 +78,7 @@ export default function Services() {
           <ButtonText><Icon name='logo-whatsapp' color='green' size={35} /></ButtonText> 
         </ButtonWhatsZap>
 
-        <ButtonWeb>
+        <ButtonWeb onPress={() => openPageWeb('https://www.3rmstech.com.br/conta-pj-c6-bank/')}>
           <ButtonText><Icon name='globe-outline' color='#000' size={35} /></ButtonText>
         </ButtonWeb>
       </AreaButttons>
@@ -87,7 +93,7 @@ export default function Services() {
           <ButtonText><Icon name='logo-whatsapp' color='green' size={35} /></ButtonText> 
         </ButtonWhatsZap>
 
-        <ButtonWeb>
+        <ButtonWeb onPress={() => openPageWeb('https://www.3rmstech.com.br/pos/')}>
           <ButtonText><Icon name='globe-outline' color='#000' size={35} /></ButtonText>
         </ButtonWeb>
       </AreaButttons>
@@ -102,7 +108,7 @@ export default function Services() {
           <ButtonText><Icon name='logo-whatsapp' color='green' size={35} /></ButtonText> 
         </ButtonWhatsZap>
 
-        <ButtonWeb>
+        <ButtonWeb onPress={() => openPageWeb('https://www.3rmstech.com.br/automacao-comercial/')}>
           <ButtonText><Icon name='globe-outline' color='#000' size={35} /></ButtonText>
         </ButtonWeb>
       </AreaButttons>
@@ -117,7 +123,7 @@ export default function Services() {
           <ButtonText><Icon name='logo-whatsapp' color='green' size={35} /></ButtonText> 
         </ButtonWhatsZap>
 
-        <ButtonWeb>
+        <ButtonWeb onPress={() => openPageWeb('https://www.3rmstech.com.br/conciliador/')}>
           <ButtonText><Icon name='globe-outline' color='#000' size={35} /></ButtonText>
         </ButtonWeb>
       </AreaButttons>
